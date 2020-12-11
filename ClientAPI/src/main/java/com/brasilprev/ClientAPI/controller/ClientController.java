@@ -4,9 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +22,6 @@ import com.brasilprev.ClientAPI.service.ClientService;
 @RequestMapping("/brasilprev/api")
 public class ClientController {
 	
-	
 	@Autowired
 	ClientService clientService;
 	
@@ -27,9 +30,48 @@ public class ClientController {
 		try {
 					
 			List<Client> clients = clientService.getAllClients();
-			return new ResponseEntity<>(clients, HttpStatus.OK);
+			
+			if(clients.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			} else {
+				return new ResponseEntity<>(clients, HttpStatus.OK);				
+			}
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@GetMapping("/client/{cpf}")
+	public ResponseEntity<Client> getClientByCpf(@PathVariable("cpf") String cpf){
+		try {
+					
+			Client client = clientService.getClientByCpf(cpf);
+			
+			if(client != null) {
+				return new ResponseEntity<>(client, HttpStatus.OK);				
+			} else {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
+			
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping("/registerClient")
+	public ResponseEntity<String> registerClient(@RequestBody Client client){
+		try {
+			Client createdClient = clientService.registerClient(client);
+			
+			if(createdClient != null) {
+				return new ResponseEntity<>("Client successfully registered !", HttpStatus.CREATED);				
+			} else {
+				return new ResponseEntity<>("This CPF is already in use for a client !", HttpStatus.CONFLICT);
+			}
+			
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 }

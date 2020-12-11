@@ -13,20 +13,20 @@ public class Client {
 	
 	@Id
 	@Column(name = "CPF")
-	private Long cpf;
+	private String cpf;
 	
 	@Column(name = "NAME", nullable = false)
 	private String name;
 	
 	@OneToOne
-	@JoinColumn(name="CPF")
+	@JoinColumn(name="CPF", nullable = true)
 	private Address address;
 	
-	public Long getCpf() {
+	public String getCpf() {
 		return cpf;
 	}
 	
-	public void setCpf(Long cpf) {
+	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 	

@@ -10,7 +10,7 @@ import javax.persistence.Table;
 public class Address {
 	
 	@Id
-	private Integer cpf;
+	private String cpf;
 	
 	@Column(name = "STREET")
 	private String street;
@@ -27,11 +27,11 @@ public class Address {
 	@Column(name = "AREA")
 	private String area;
 	
-	public Integer getCpf() {
+	public String getCpf() {
 		return cpf;
 	}
 	
-	public void setCpf(Integer cpf) {
+	public void setCpf(String cpf) {
 		this.cpf = cpf;
 	}
 	
