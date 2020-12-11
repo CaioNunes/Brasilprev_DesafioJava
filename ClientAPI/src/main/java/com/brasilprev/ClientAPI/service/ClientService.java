@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.brasilprev.ClientAPI.model.Client;
@@ -34,12 +35,39 @@ public class ClientService {
 	public Client registerClient(Client client) {
 		Client createdClient = null;
 		
-		//If you already have a cliente with that cpf, do not register 
+		//If you already have a client with that cpf, do not register 
 		if(getClientByCpf(client.getCpf()) == null) {
 			createdClient = clientRepository.save(client);			
 		}
 		
 		return createdClient;
+	}
+	
+	public boolean deleteClient(String cpf) throws EmptyResultDataAccessException{
+		boolean founded = true;
+		
+		try {
+			clientRepository.deleteById(cpf);
+		} catch (EmptyResultDataAccessException e) {
+			founded = false;
+		}
+		
+		return founded;
+	}
+	
+	public Client updateClient(Client client) {
+		Optional<Client> clientData = clientRepository.findById(client.getCpf());
+		
+		if(clientData.isPresent()) {
+			Client newClient = clientData.get();
+			newClient.setName(client.getName());
+			newClient.setAddress(client.getAddress());
+			clientRepository.save(newClient);
+			return newClient;
+		} else {
+			return null;
+		}
+		
 	}
 	
 }
