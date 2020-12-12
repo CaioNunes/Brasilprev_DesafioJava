@@ -60,6 +60,23 @@ public class ClientController {
 		}
 	}
 	
+	@GetMapping("/clients/{name}")
+	public ResponseEntity<List<Client>> getClientByNameContaining(@PathVariable("name") String name){
+		try {
+					
+			List<Client> clients = clientService.getClientByName(name);
+			
+			if(!clients.isEmpty()) {
+				return new ResponseEntity<>(clients, HttpStatus.OK);				
+			} else {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+			
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	@PostMapping("/registerClient")
 	public ResponseEntity<String> registerClient(@RequestBody Client client){
 		try {

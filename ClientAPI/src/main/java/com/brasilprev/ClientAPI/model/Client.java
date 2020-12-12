@@ -1,7 +1,11 @@
 package com.brasilprev.ClientAPI.model;
 
+import java.io.Serializable;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -9,7 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Client")
-public class Client {
+public class Client implements Serializable{
 	
 	@Id
 	@Column(name = "CPF")
@@ -18,8 +22,7 @@ public class Client {
 	@Column(name = "NAME", nullable = false)
 	private String name;
 	
-	@OneToOne
-	@JoinColumn(name="CPF", nullable = true)
+	@OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
 	private Address address;
 	
 	public String getCpf() {

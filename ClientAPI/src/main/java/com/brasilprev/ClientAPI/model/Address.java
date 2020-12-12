@@ -1,16 +1,30 @@
 package com.brasilprev.ClientAPI.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "Address")
-public class Address {
+public class Address implements Serializable{
 	
 	@Id
-	private String cpf;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
+	
+	@JoinColumn(name = "cpf")
+	@OneToOne
+	@JsonIgnore
+	private Client client;
 	
 	@Column(name = "STREET")
 	private String street;
@@ -27,12 +41,20 @@ public class Address {
 	@Column(name = "AREA")
 	private String area;
 	
-	public String getCpf() {
-		return cpf;
+	public Integer getId() {
+		return id;
 	}
 	
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
+	public Client getClient() {
+		return client;
+	}
+	
+	public void setClient(Client client) {
+		this.client = client;
 	}
 	
 	public String getStreet() {

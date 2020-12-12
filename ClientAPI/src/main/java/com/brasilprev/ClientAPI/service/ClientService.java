@@ -32,11 +32,18 @@ public class ClientService {
 		
 	}
 	
+	public List<Client> getClientByName(String name) {
+		List<Client> clientData = clientRepository.findByNameContainingIgnoreCase(name);
+		
+		return clientData;
+	}
+	
 	public Client registerClient(Client client) {
 		Client createdClient = null;
 		
 		//If you already have a client with that cpf, do not register 
 		if(getClientByCpf(client.getCpf()) == null) {
+			client.getAddress().setClient(client);
 			createdClient = clientRepository.save(client);			
 		}
 		
