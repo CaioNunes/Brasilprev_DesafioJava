@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -18,9 +19,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Address implements Serializable{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	private String id;
 	
+	@MapsId
 	@JoinColumn(name = "cpf")
 	@OneToOne
 	@JsonIgnore
@@ -41,11 +42,11 @@ public class Address implements Serializable{
 	@Column(name = "AREA")
 	private String area;
 	
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
 	
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	

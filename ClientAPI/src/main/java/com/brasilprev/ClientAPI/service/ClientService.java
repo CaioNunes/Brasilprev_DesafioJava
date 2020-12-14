@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import com.brasilprev.ClientAPI.model.Address;
 import com.brasilprev.ClientAPI.model.Client;
 import com.brasilprev.ClientAPI.repository.ClientRepository;
 
@@ -43,7 +44,10 @@ public class ClientService {
 		
 		//If you already have a client with that cpf, do not register 
 		if(getClientByCpf(client.getCpf()) == null) {
-			client.getAddress().setClient(client);
+			
+			if(client.getAddress() != null)
+				client.getAddress().setClient(client);
+			
 			createdClient = clientRepository.save(client);			
 		}
 		
@@ -66,15 +70,38 @@ public class ClientService {
 		Optional<Client> clientData = clientRepository.findById(client.getCpf());
 		
 		if(clientData.isPresent()) {
-			Client newClient = clientData.get();
-			newClient.setName(client.getName());
-			newClient.setAddress(client.getAddress());
-			clientRepository.save(newClient);
-			return newClient;
+
+			if(client.getAddress() != null)
+				client.getAddress().setClient(client);
+
+			clientRepository.save(client);
+			
+			return client;
 		} else {
 			return null;
 		}
 		
 	}
+	
+	public Client updateClientAddress(Address address, String cpf) {
+		Optional<Client> clientData = clientRepository.findById(cpf);
+		
+		if(clientData.isPresent()) {
+			
+			Client client = clientData.get();
+			client.setAddress(address);
+			
+			if(client.getAddress() != null)
+				client.getAddress().setClient(client);
+
+			clientRepository.save(client);
+			
+			return client;
+		} else {
+			return null;
+		}
+		
+	}
+	
 	
 }

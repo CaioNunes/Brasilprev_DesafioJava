@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.brasilprev.ClientAPI.model.Address;
 import com.brasilprev.ClientAPI.model.Client;
 import com.brasilprev.ClientAPI.service.ClientService;
 
@@ -124,5 +126,22 @@ public class ClientController {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@PatchMapping("/updateAddress/{cpf}")
+	public ResponseEntity<String> updateAddress(@RequestBody Address clientAddress, @PathVariable("cpf") String cpf){
+		try {
+			Client updatedClient = clientService.updateClientAddress(clientAddress, cpf);
+			
+			if(updatedClient != null) {
+				return new ResponseEntity<>("Client Address successfully updated !", HttpStatus.OK);				
+			} else {
+				return new ResponseEntity<>("No client found with this cpf !", HttpStatus.NOT_FOUND);
+			}
+			
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	
 }
