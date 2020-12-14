@@ -21,14 +21,17 @@ import com.brasilprev.ClientAPI.model.Address;
 import com.brasilprev.ClientAPI.model.Client;
 import com.brasilprev.ClientAPI.service.ClientService;
 
+import io.swagger.annotations.ApiOperation;
+
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/brasilprev/api")
+@RequestMapping(value = "/brasilprev/api", produces = "application/json")
 public class ClientController {
 	
 	@Autowired
 	ClientService clientService;
 	
+	@ApiOperation(value = "Return the list of all clients.")
 	@GetMapping("/clients")
 	public ResponseEntity<List<Client>> getAllClients(){
 		try {
@@ -45,6 +48,7 @@ public class ClientController {
 		}
 	}
 	
+	@ApiOperation(value = "Return a client by the specified cpf.")
 	@GetMapping("/client/{cpf}")
 	public ResponseEntity<Client> getClientByCpf(@PathVariable("cpf") String cpf){
 		try {
@@ -62,6 +66,7 @@ public class ClientController {
 		}
 	}
 	
+	@ApiOperation(value = "Return a client by the specified part of name.")
 	@GetMapping("/clients/{name}")
 	public ResponseEntity<List<Client>> getClientByNameContaining(@PathVariable("name") String name){
 		try {
@@ -79,6 +84,7 @@ public class ClientController {
 		}
 	}
 	
+	@ApiOperation(value = "Register a new client.")
 	@PostMapping("/registerClient")
 	public ResponseEntity<String> registerClient(@RequestBody Client client){
 		try {
@@ -95,6 +101,7 @@ public class ClientController {
 		}
 	}
 	
+	@ApiOperation(value = "Delete a client by the specified cpf.")
 	@DeleteMapping("/deleteClient/{cpf}")
 	public ResponseEntity<String> deleteClientByCpf(@PathVariable("cpf") String cpf){
 		try {
@@ -111,7 +118,8 @@ public class ClientController {
 		}
 	}
 	
-	@PutMapping("/updateClient")
+	@ApiOperation(value = "Update a registered client.")
+	@PatchMapping("/updateClient")
 	public ResponseEntity<String> updateClient(@RequestBody Client client){
 		try {
 			Client updatedClient = clientService.updateClient(client);
@@ -127,6 +135,7 @@ public class ClientController {
 		}
 	}
 	
+	@ApiOperation(value = "Update a registered client`s address.")
 	@PatchMapping("/updateAddress/{cpf}")
 	public ResponseEntity<String> updateAddress(@RequestBody Address clientAddress, @PathVariable("cpf") String cpf){
 		try {

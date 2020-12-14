@@ -70,10 +70,10 @@ public class ClientService {
 		Optional<Client> clientData = clientRepository.findById(client.getCpf());
 		
 		if(clientData.isPresent()) {
-
+			
 			if(client.getAddress() != null)
 				client.getAddress().setClient(client);
-
+			
 			clientRepository.save(client);
 			
 			return client;

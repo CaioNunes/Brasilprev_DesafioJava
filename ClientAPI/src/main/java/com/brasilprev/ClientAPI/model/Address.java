@@ -19,10 +19,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Address implements Serializable{
 	
 	@Id
-	private String id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
 	
-	@MapsId
-	@JoinColumn(name = "cpf")
+	@JoinColumn(name = "cpf", nullable = false)
 	@OneToOne
 	@JsonIgnore
 	private Client client;
@@ -42,11 +42,11 @@ public class Address implements Serializable{
 	@Column(name = "AREA")
 	private String area;
 	
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 	
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	

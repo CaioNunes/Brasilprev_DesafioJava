@@ -22,7 +22,7 @@ public class Client implements Serializable{
 	@Column(name = "NAME", nullable = false)
 	private String name;
 	
-	@OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
+	@OneToOne(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Address address;
 	
 	public String getCpf() {
